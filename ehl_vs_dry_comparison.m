@@ -698,13 +698,17 @@ function delta_ball1 = ComputeDelta_Roller1_Dry(t, y)
 end
 
 function h_in = SpallDepth(angle_diff, phi_di, delta_max)
-    % Linear-ramp spall depth profile with sloped entry/exit.
+    % Sloped entry into the spall, with a flat bottom afterwards.
+    % ramp_in_ratio controls the fraction of the defect angle used for entry.
+    ramp_in_ratio = 0.25;
     u = (angle_diff + phi_di) / (2 * phi_di);
     u = min(max(u, 0), 1);
-    if u <= 0.5
-        h_in = delta_max * (2 * u);
+    ramp_end = ramp_in_ratio;
+
+    if u <= ramp_end
+        h_in = delta_max * (u / ramp_end);
     else
-        h_in = delta_max * (2 * (1 - u));
+        h_in = delta_max;
     end
 end
 
